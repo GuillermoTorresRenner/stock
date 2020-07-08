@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 07-jul-2020 19:12:16 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Subcategoria" table="subcategoria" catalog="inventario" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="subcategoria" type="string">
+            <column name="subcategoria" length="30" not-null="true" />
+        </property>
+        <set name="items" table="item" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="subcategoria" not-null="true" />
+            </key>
+            <one-to-many class="model.Item" />
+        </set>
+    </class>
+</hibernate-mapping>
