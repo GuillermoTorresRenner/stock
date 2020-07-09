@@ -1,6 +1,5 @@
 
 import controller.ControladorStock;
-import model.Categoria;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -12,10 +11,14 @@ import model.Categoria;
  *
  * @author guille
  */
-public class Main {
+public class NewMain {
+
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
-        Categoria c= new Categoria("categoria a prueba de idiotas");
-        ControladorStock cs= new ControladorStock();
-        cs.agregarCategoria(c);
+       controller.ControladorStock c= new ControladorStock();
+        System.out.println( c.dameIdCategoria("CAT1"));
+     
     }
 }

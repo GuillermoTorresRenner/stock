@@ -1,5 +1,5 @@
 package model;
-// Generated 07-jul-2020 19:12:15 by Hibernate Tools 4.3.1
+// Generated 08-jul-2020 21:20:38 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -15,8 +15,9 @@ public class Item  implements java.io.Serializable {
      private Categoria categoria;
      private Marca marca;
      private Subcategoria subcategoria;
+     private String nombre;
      private String codigo;
-     private int modelo;
+     private String modelo;
      private String descripcion;
      private byte[] foto;
      private Set stocks = new HashSet(0);
@@ -25,17 +26,19 @@ public class Item  implements java.io.Serializable {
     }
 
 	
-    public Item(Categoria categoria, Marca marca, Subcategoria subcategoria, String codigo, int modelo) {
+    public Item(Categoria categoria, Marca marca, Subcategoria subcategoria, String nombre, String codigo, String modelo) {
         this.categoria = categoria;
         this.marca = marca;
         this.subcategoria = subcategoria;
+        this.nombre = nombre;
         this.codigo = codigo;
         this.modelo = modelo;
     }
-    public Item(Categoria categoria, Marca marca, Subcategoria subcategoria, String codigo, int modelo, String descripcion, byte[] foto, Set stocks) {
+    public Item(Categoria categoria, Marca marca, Subcategoria subcategoria, String nombre, String codigo, String modelo, String descripcion, byte[] foto, Set stocks) {
        this.categoria = categoria;
        this.marca = marca;
        this.subcategoria = subcategoria;
+       this.nombre = nombre;
        this.codigo = codigo;
        this.modelo = modelo;
        this.descripcion = descripcion;
@@ -71,6 +74,13 @@ public class Item  implements java.io.Serializable {
     public void setSubcategoria(Subcategoria subcategoria) {
         this.subcategoria = subcategoria;
     }
+    public String getNombre() {
+        return this.nombre;
+    }
+    
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
     public String getCodigo() {
         return this.codigo;
     }
@@ -78,11 +88,11 @@ public class Item  implements java.io.Serializable {
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
-    public int getModelo() {
+    public String getModelo() {
         return this.modelo;
     }
     
-    public void setModelo(int modelo) {
+    public void setModelo(String modelo) {
         this.modelo = modelo;
     }
     public String getDescripcion() {
