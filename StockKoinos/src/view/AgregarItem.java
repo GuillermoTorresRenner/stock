@@ -19,6 +19,7 @@ import model.Categoria;
 import model.Marca;
 import model.Subcategoria;
 import model.CodigoBarras;
+import model.Item;
 
 /**
  *
@@ -33,12 +34,14 @@ public class AgregarItem extends javax.swing.JInternalFrame {
     String n="", c="", sc="", ma="", mo="", codigo="";
     private File archivoFoto;
     private CodigoBarras codigoBarras= new CodigoBarras();
+    private Item item;
 
     public AgregarItem() {
         initComponents();
         this.setSize(1200, 800);
         this.setTitle("Agregar Ítem");
         this.setVisible(true);
+        txtNombre.requestFocus();
         cs = new ControladorItem();
 
         //inicialización de combos
@@ -47,6 +50,7 @@ public class AgregarItem extends javax.swing.JInternalFrame {
        actualizarCbMarca();
         
         txtNombre.setText("");
+       
     }
 
     //Declaración de métodos de la clase
@@ -72,15 +76,36 @@ public class AgregarItem extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "Debe seleccionar una categoría antes de guardar","Aviso categoria",JOptionPane.WARNING_MESSAGE);
             }else if (cbSubcategoria.getSelectedIndex()==0) {
                 JOptionPane.showMessageDialog(this, "Debe seleccionar una subcategoría antes de guardar","Aviso subcategoria",JOptionPane.WARNING_MESSAGE);
-            }else if (txtElemento.getText().isEmpty()) {
-                 JOptionPane.showMessageDialog(this, "Debe seleccionar una nombre de Elemento antes de  guardar","Aviso Elemento",JOptionPane.WARNING_MESSAGE);
+            }else if (txtNombre.getText().isEmpty()) {
+                 JOptionPane.showMessageDialog(this, "Debe seleccionar una Nombre para el ítem antes de  guardar","Aviso Elemento",JOptionPane.WARNING_MESSAGE);
         }   else{
                 if (txtCodigo.getText().length()<4) {
-                    txtCodigo.setText(cs.dameCodigo(cbCategoria.getSelectedItem().toString(), cbSubcategoria.getSelectedItem().toString(), cbMarca.getSelectedItem().toString()));
+                    int o;
+                    boolean exito;
+                   o= JOptionPane.showConfirmDialog(null, "DESEA GUARDAR EL ÍTEM: "+txtNombre.getText(), "guardado de item", JOptionPane.YES_NO_OPTION);
+                    if (o==JOptionPane.YES_OPTION) {
+                        txtCodigo.setText(cs.dameCodigo(cbCategoria.getSelectedItem().toString(), cbSubcategoria.getSelectedItem().toString(), cbMarca.getSelectedItem().toString()));
                     JOptionPane.showMessageDialog(this, "se auto genró el código: " + txtCodigo.getText().toString(),"Aviso subcategoria",JOptionPane.WARNING_MESSAGE);
                     Icon i=codigoBarras.dameimagenCodigoBarras(txtCodigo.getText(), lblCodigoBarras);
                     lblCodigoBarras.setIcon(i);
                     lblCodigoBarras.setText(txtCodigo.getText());
+                    exito= guardarDatos(item);
+                    
+                        if (exito) {
+                            int op;
+                            op=JOptionPane.showConfirmDialog(null, "DESEA AGREGAR EL ITEM AL STOCK ACTUAL?", "CONFIRMACIÓN DE INGRESO A STOCK", JOptionPane.YES_NO_OPTION);
+                            if (op==JOptionPane.YES_OPTION) {
+                                
+                                ////////////////////////////////////////////////////////////////////////////////////////
+                                
+                                
+                                /////////////////////////////////////////////////////////////////////////////////////
+                                
+                            }
+                        }
+                    }
+                }else{
+                     JOptionPane.showMessageDialog(this, "INGRESE UN CÓDIGO DE PRODUCTO VÁLIDO","AVISO CÓDIGO INCORRECTO",JOptionPane.WARNING_MESSAGE);
                 }
                 
                 
@@ -98,6 +123,29 @@ public class AgregarItem extends javax.swing.JInternalFrame {
         buttonGroup2 = new javax.swing.ButtonGroup();
         VentanaChooser = new javax.swing.JDialog();
         chooser = new javax.swing.JFileChooser();
+        ingresoStock = new javax.swing.JDialog();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jSpinner1 = new javax.swing.JSpinner();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox3 = new javax.swing.JComboBox<>();
+        jComboBox4 = new javax.swing.JComboBox<>();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jLabel20 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -118,16 +166,12 @@ public class AgregarItem extends javax.swing.JInternalFrame {
         btnAgregarSubcategoría = new javax.swing.JButton();
         btnAgregarCategoria = new javax.swing.JButton();
         btnAgregarMarca = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
-        txtNombre = new javax.swing.JTextField();
-        rbAutogenerarNombre = new javax.swing.JRadioButton();
-        rbEscribirManual = new javax.swing.JRadioButton();
         btnSeleccionarImg = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         lblPathFoto = new javax.swing.JLabel();
         lblCodigoBarras = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        txtElemento = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
         btnGuardar1 = new javax.swing.JButton();
 
         javax.swing.GroupLayout VentanaChooserLayout = new javax.swing.GroupLayout(VentanaChooser.getContentPane());
@@ -143,6 +187,145 @@ public class AgregarItem extends javax.swing.JInternalFrame {
             .addGroup(VentanaChooserLayout.createSequentialGroup()
                 .addComponent(chooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        jLabel1.setText("Item:");
+
+        jLabel8.setText("jLabel8");
+
+        jLabel11.setText("id:");
+
+        jLabel12.setText("jLabel12");
+
+        jLabel13.setText("Fecha:");
+
+        jLabel14.setText("jLabel14");
+
+        jLabel15.setText("Unidad:");
+
+        jLabel16.setText("Cantidad");
+
+        jLabel17.setText("Bodega:");
+
+        jLabel18.setText("Lote:");
+
+        jLabel19.setText("Caja:");
+
+        jButton1.setText("Guardar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Cancelar");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jButton3.setText("Agregar");
+
+        jButton4.setText("Agregar");
+
+        jButton5.setText("Agregar");
+
+        jLabel20.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        jLabel20.setText("Agregar Ítem a Stock");
+
+        javax.swing.GroupLayout ingresoStockLayout = new javax.swing.GroupLayout(ingresoStock.getContentPane());
+        ingresoStock.getContentPane().setLayout(ingresoStockLayout);
+        ingresoStockLayout.setHorizontalGroup(
+            ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ingresoStockLayout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ingresoStockLayout.createSequentialGroup()
+                        .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(ingresoStockLayout.createSequentialGroup()
+                                .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel19)
+                                    .addComponent(jLabel18)
+                                    .addComponent(jLabel17)
+                                    .addComponent(jLabel16)
+                                    .addComponent(jLabel15)
+                                    .addComponent(jLabel13)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jLabel1))
+                                .addGap(18, 18, 18)
+                                .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jSpinner1)
+                                    .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jComboBox4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(18, 18, 18)
+                        .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jButton3)
+                                .addComponent(jButton4)
+                                .addComponent(jButton5))
+                            .addComponent(jButton2)))
+                    .addComponent(jLabel20))
+                .addContainerGap(31, Short.MAX_VALUE))
+        );
+        ingresoStockLayout.setVerticalGroup(
+            ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ingresoStockLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel20)
+                .addGap(18, 18, 18)
+                .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel8))
+                .addGap(18, 18, 18)
+                .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel12))
+                .addGap(18, 18, 18)
+                .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(jLabel14))
+                .addGap(18, 18, 18)
+                .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ingresoStockLayout.createSequentialGroup()
+                        .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel17)
+                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel18)
+                            .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButton3))))
+                    .addComponent(jButton4))
+                .addGap(18, 18, 18)
+                .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel19)
+                    .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton5)))
+                .addGap(53, 53, 53)
+                .addGroup(ingresoStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         jLabel2.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
@@ -226,6 +409,11 @@ public class AgregarItem extends javax.swing.JInternalFrame {
             }
         });
 
+        txtModelo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtModeloActionPerformed(evt);
+            }
+        });
         txtModelo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtModeloKeyTyped(evt);
@@ -233,7 +421,9 @@ public class AgregarItem extends javax.swing.JInternalFrame {
         });
 
         txtDescripcion.setColumns(20);
+        txtDescripcion.setLineWrap(true);
         txtDescripcion.setRows(5);
+        txtDescripcion.setWrapStyleWord(true);
         jScrollPane1.setViewportView(txtDescripcion);
 
         lblFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/sinImagen.png"))); // NOI18N
@@ -267,30 +457,6 @@ public class AgregarItem extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel8.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
-        jLabel8.setText("Nombre:");
-        jLabel8.setToolTipText("Código de Barra");
-        jLabel8.setEnabled(false);
-
-        txtNombre.setEditable(false);
-
-        buttonGroup2.add(rbAutogenerarNombre);
-        rbAutogenerarNombre.setSelected(true);
-        rbAutogenerarNombre.setText("Autogenerar");
-        rbAutogenerarNombre.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                rbAutogenerarNombreStateChanged(evt);
-            }
-        });
-
-        buttonGroup2.add(rbEscribirManual);
-        rbEscribirManual.setText("Escribir Manualmente");
-        rbEscribirManual.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                rbEscribirManualStateChanged(evt);
-            }
-        });
-
         btnSeleccionarImg.setText("Seleccionar imagen");
         btnSeleccionarImg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -301,10 +467,18 @@ public class AgregarItem extends javax.swing.JInternalFrame {
         jLabel9.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         jLabel9.setText("Agregar Items al sistema");
 
+        lblCodigoBarras.setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel10.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
-        jLabel10.setText("Elemento:");
+        jLabel10.setText("Nombre");
         jLabel10.setToolTipText("Código de Barra");
         jLabel10.setEnabled(false);
+
+        txtNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreActionPerformed(evt);
+            }
+        });
 
         btnGuardar1.setText("Guardar Registro");
         btnGuardar1.addActionListener(new java.awt.event.ActionListener() {
@@ -320,68 +494,55 @@ public class AgregarItem extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(283, 283, 283)
+                        .addComponent(jLabel9))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(49, 49, 49)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(661, 661, 661)
-                                .addComponent(lblPathFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel8)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jLabel3)
-                                        .addComponent(jLabel4)
-                                        .addComponent(jLabel10)
-                                        .addComponent(jLabel5)
-                                        .addComponent(jLabel6)
-                                        .addComponent(jLabel7))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 448, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 448, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(cbMarca, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(cbSubcategoria, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(cbCategoria, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtCodigo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(rbAutogenerarCodigo)
+                                        .addGap(36, 36, 36)
+                                        .addComponent(rbIntroducirPistola))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addGroup(layout.createSequentialGroup()
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(layout.createSequentialGroup()
-                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addGap(18, 18, 18)
-                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(rbAutogenerarCodigo)
-                                                        .addComponent(rbAutogenerarNombre)))
-                                                .addComponent(txtElemento, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(cbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 448, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(layout.createSequentialGroup()
-                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(cbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(cbSubcategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addGap(18, 18, 18)
-                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(btnAgregarCategoria)
-                                                        .addGroup(layout.createSequentialGroup()
-                                                            .addGap(6, 6, 6)
-                                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                .addComponent(btnAgregarMarca)
-                                                                .addComponent(btnAgregarSubcategoría))))))
+                                                .addComponent(btnAgregarCategoria)
+                                                .addComponent(btnAgregarSubcategoría)
+                                                .addComponent(btnAgregarMarca))
+                                            .addGap(18, 18, 18)
+                                            .addComponent(lblCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(lblPathFoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(lblFoto)
                                             .addGap(18, 18, 18)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(rbEscribirManual)
-                                                .addComponent(rbIntroducirPistola)
-                                                .addComponent(lblCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(layout.createSequentialGroup()
-                                                    .addGap(6, 6, 6)
-                                                    .addComponent(lblFoto)
-                                                    .addGap(18, 18, 18)
-                                                    .addComponent(btnSeleccionarImg))))
-                                        .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(283, 283, 283)
-                        .addComponent(jLabel9)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addComponent(btnGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(btnSeleccionarImg)))))))))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -400,14 +561,12 @@ public class AgregarItem extends javax.swing.JInternalFrame {
                             .addComponent(rbAutogenerarCodigo)
                             .addComponent(rbIntroducirPistola))))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rbAutogenerarNombre)
-                    .addComponent(rbEscribirManual))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(cbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -420,40 +579,37 @@ public class AgregarItem extends javax.swing.JInternalFrame {
                                 .addComponent(btnAgregarSubcategoría)))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addComponent(txtElemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(cbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(btnAgregarMarca))))
                     .addComponent(lblCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblPathFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(2, 2, 2)
+                                .addComponent(txtModelo)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblPathFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
+                                .addGap(12, 12, 12)
                                 .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(84, 84, 84)
-                                .addComponent(btnSeleccionarImg))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel7)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(82, 82, 82)
+                                .addComponent(btnSeleccionarImg)))))
+                .addGap(18, 24, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(129, Short.MAX_VALUE))
         );
 
         pack();
@@ -528,60 +684,23 @@ public class AgregarItem extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnAgregarMarcaActionPerformed
 
     private void cbCategoriaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbCategoriaItemStateChanged
-        if (rbAutogenerarNombre.isSelected()) {
-              txtNombre.setText("");
-        c = String.valueOf(cbCategoria.getSelectedItem());
-        n = c + " " + sc + " " + ma + " " + mo;
-        txtNombre.setText(n);
-        }else{
-            txtNombre.setText("");
-        }
+        
 
     }//GEN-LAST:event_cbCategoriaItemStateChanged
 
     private void cbSubcategoriaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbSubcategoriaItemStateChanged
-        if (rbAutogenerarNombre.isSelected()) {
-             txtNombre.setText("");
-        sc = String.valueOf(cbSubcategoria.getSelectedItem());
-        n = c + " " + sc + " " + ma + " " + mo;
-        txtNombre.setText(n);
-        }else{
-            txtNombre.setText("");
-        }
+       
        
     }//GEN-LAST:event_cbSubcategoriaItemStateChanged
 
     private void cbMarcaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbMarcaItemStateChanged
-        if (rbAutogenerarNombre.isSelected()) {
-            txtNombre.setText("");
-         ma= String.valueOf(cbMarca.getSelectedItem());
-        n = c + " " + sc + " " + ma + " " + mo;
-        txtNombre.setText(n);
-        }else{
-            txtNombre.setText("");
-        }
+        
     }//GEN-LAST:event_cbMarcaItemStateChanged
 
     private void txtModeloKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtModeloKeyTyped
-            txtNombre.setText("");
-            mo = txtModelo.getText();
-            n = c + " " + sc + " " + ma + " " + mo;
-            
-            txtNombre.setText(n);
+           
        
     }//GEN-LAST:event_txtModeloKeyTyped
-
-    private void rbEscribirManualStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rbEscribirManualStateChanged
-        if (rbEscribirManual.isSelected()) {
-            txtNombre.setEditable(true);
-        }
-    }//GEN-LAST:event_rbEscribirManualStateChanged
-
-    private void rbAutogenerarNombreStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rbAutogenerarNombreStateChanged
-        if (rbAutogenerarNombre.isSelected()) {
-            txtNombre.setEditable(false);
-        }
-    }//GEN-LAST:event_rbAutogenerarNombreStateChanged
 
     private void btnSeleccionarImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarImgActionPerformed
         VentanaChooser.pack();
@@ -617,6 +736,18 @@ public class AgregarItem extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnGuardar1ActionPerformed
 
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
+
+    private void txtModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtModeloActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtModeloActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog VentanaChooser;
@@ -632,8 +763,29 @@ public class AgregarItem extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> cbMarca;
     private javax.swing.JComboBox<String> cbSubcategoria;
     private javax.swing.JFileChooser chooser;
+    private javax.swing.JDialog ingresoStock;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> jComboBox4;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -642,17 +794,31 @@ public class AgregarItem extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JLabel lblCodigoBarras;
     private javax.swing.JLabel lblFoto;
     private javax.swing.JLabel lblPathFoto;
     private javax.swing.JRadioButton rbAutogenerarCodigo;
-    private javax.swing.JRadioButton rbAutogenerarNombre;
-    private javax.swing.JRadioButton rbEscribirManual;
     private javax.swing.JRadioButton rbIntroducirPistola;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextArea txtDescripcion;
-    private javax.swing.JTextField txtElemento;
     private javax.swing.JTextField txtModelo;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
+
+    private boolean guardarDatos(Item item) {
+      item=new Item();
+      item.setCodigo(txtCodigo.getText());
+      item.setNombre(txtNombre.getText().toUpperCase());
+      item.setCategoria(cs.dameIdCombo(1, cbCategoria.getSelectedItem().toString()));
+      item.setSubcategoria(cs.dameIdCombo(2, cbSubcategoria.getSelectedItem().toString()));
+      item.setMarca(cs.dameIdCombo(3, cbMarca.getSelectedItem().toString()));
+      item.setModelo(txtModelo.getText().toUpperCase());
+      item.setDescripcion(txtDescripcion.getText().toUpperCase());
+      item.setFoto(archivoFoto);
+      return cs.guardarItem(item);
+      
+    
+     
+    }
 }
