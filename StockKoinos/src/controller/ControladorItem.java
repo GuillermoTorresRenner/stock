@@ -22,14 +22,14 @@ import model.Subcategoria;
  *
  * @author guille
  */
-public class ControladorStock {
+public class ControladorItem {
     
     
     private ResultSet rs;
     private PreparedStatement ps;
     private Conexion con;
 
-    public ControladorStock() {
+    public ControladorItem() {
        con=new Conexion();
     }
     
@@ -42,14 +42,14 @@ public class ControladorStock {
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Categoria "+c.getCategoria().toUpperCase() +" creada exitosamente");
         } catch (SQLException ex) {
-            Logger.getLogger(ControladorStock.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControladorItem.class.getName()).log(Level.SEVERE, null, ex);
              JOptionPane.showMessageDialog(null, "No se pudo crear la categoría "+c.getCategoria().toUpperCase());
         }
         
         try {
             con.cerrarConexion();
         } catch (SQLException ex) {
-            Logger.getLogger(ControladorStock.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControladorItem.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
@@ -62,7 +62,7 @@ public class ControladorStock {
             JOptionPane.showMessageDialog(null, "Subcategoria "+sc.getSubcategoria().toUpperCase()+" creada exitosamente");
              con.cerrarConexion();
         } catch (SQLException ex) {
-            Logger.getLogger(ControladorStock.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControladorItem.class.getName()).log(Level.SEVERE, null, ex);
              JOptionPane.showMessageDialog(null, "No se pudo crear la Subcategoría "+sc.getSubcategoria().toUpperCase());
         }
         
@@ -79,7 +79,7 @@ public class ControladorStock {
             
             con.cerrarConexion();
         } catch (SQLException ex) {
-            Logger.getLogger(ControladorStock.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControladorItem.class.getName()).log(Level.SEVERE, null, ex);
              JOptionPane.showMessageDialog(null, "No se pudo crear la Marca "+m.getMarca().toUpperCase());
         }
         
@@ -94,14 +94,14 @@ public class ControladorStock {
         try {
             ps= con.establecerConexion().prepareStatement("SELECT marca from marca order by marca");
             rs=ps.executeQuery();
-            cb.addElement("SELECCIONE UNA MARCA");
+            cb.addElement("SIN MARCA");
             while(rs.next()){
                 cb.addElement(rs.getString("marca"));
             }
                     
              con.cerrarConexion();
         } catch (SQLException ex) {
-            Logger.getLogger(ControladorStock.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControladorItem.class.getName()).log(Level.SEVERE, null, ex);
         }
         
        
@@ -123,7 +123,7 @@ public class ControladorStock {
                     
              con.cerrarConexion();
         } catch (SQLException ex) {
-            Logger.getLogger(ControladorStock.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControladorItem.class.getName()).log(Level.SEVERE, null, ex);
         }
         
        
@@ -144,7 +144,7 @@ public class ControladorStock {
                     
              con.cerrarConexion();
         } catch (SQLException ex) {
-            Logger.getLogger(ControladorStock.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControladorItem.class.getName()).log(Level.SEVERE, null, ex);
         }
         
        
@@ -156,13 +156,12 @@ public class ControladorStock {
           int id = 0;
           String ids = null;
        try {
-            ps= con.establecerConexion().prepareStatement("SELECT MAX(id) +1 from item ");
+            ps= con.establecerConexion().prepareStatement("SELECT MAX(id) +1 FROM item");
             rs=ps.executeQuery();
            
-            while(rs.next()){
-               id=rs.getInt(id);
-            }
-            
+           while (rs.next()) {
+               id=rs.getInt(1);
+           }
             
              ids=String.valueOf(id);
           if(ids.length()<10){
@@ -178,7 +177,7 @@ public class ControladorStock {
                     
              con.cerrarConexion();
         } catch (SQLException ex) {
-            Logger.getLogger(ControladorStock.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControladorItem.class.getName()).log(Level.SEVERE, null, ex);
         }
           
          
@@ -187,9 +186,106 @@ public class ControladorStock {
     }
     
       
-       public String dameIdCategoria(String cat){
-      
+       private String dameIdCategoria(String cat){
+      int id = 0;
+          String ids = null;
+       try {
+            ps= con.establecerConexion().prepareStatement("SELECT id from categoria where categoria=?");
+            ps.setString(1, cat);
+            rs=ps.executeQuery();
+           
+           while (rs.next()) {
+               id=rs.getInt(1);
+           }
+            
+             ids=String.valueOf(id);
+          if(ids.length()<10){
+              ids="00"+ids;
+              
+          }
+          if (ids.length()> 9 && ids.length()<100 ){
+            ids="0"+ids;
+      }
+         
+                    
+             con.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorItem.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          
+         
         
-        return null;
+        return ids;
     }
+       
+       private String dameIdSubCategoria(String subcat){
+      int id = 0;
+          String ids = null;
+       try {
+            ps= con.establecerConexion().prepareStatement("SELECT id from subcategoria where subcategoria=?");
+            ps.setString(1, subcat);
+            rs=ps.executeQuery();
+           
+           while (rs.next()) {
+               id=rs.getInt(1);
+           }
+            
+             ids=String.valueOf(id);
+          if(ids.length()<10){
+              ids="00"+ids;
+              
+          }
+          if (ids.length()> 9 && ids.length()<100 ){
+            ids="0"+ids;
+      }
+         
+                    
+             con.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorItem.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          
+         
+        
+        return ids;
+    }
+       
+       private String dameIdMarca(String marca){
+      int id = 0;
+          String ids = null;
+       try {
+            ps= con.establecerConexion().prepareStatement("SELECT id from marca where marca=?");
+            ps.setString(1, marca);
+            rs=ps.executeQuery();
+           
+           while (rs.next()) {
+               id=rs.getInt(1);
+           }
+            
+             ids=String.valueOf(id);
+          if(ids.length()<10){
+              ids="00"+ids;
+              
+          }
+          if (ids.length()> 9 && ids.length()<100 ){
+            ids="0"+ids;
+      }
+         
+                    
+             con.cerrarConexion();
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorItem.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          
+         
+        
+        return ids;
+    }
+       
+       public String dameCodigo(String cat, String subcat,String marca){
+           String cod = null;
+           
+           return dameIdCategoria(cat)+dameIdSubCategoria(subcat)+dameIdMarca(marca)+dameIdActual();
+       }
+       
 }

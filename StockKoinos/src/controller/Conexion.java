@@ -8,6 +8,7 @@ package controller;
 import com.mysql.jdbc.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,9 +22,9 @@ public class Conexion {
             Class.forName("com.mysql.jdbc.Driver");
             cnx = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/inventario", "root", "");
          } catch (SQLException ex) {
-           
-         } catch (ClassNotFoundException ex) {
-            throw new ClassCastException(ex.getMessage());
+             JOptionPane.showMessageDialog(null, "No se puede establecer conexión con la base de datos, revise que XAMMP este corriendo");
+         } catch (ClassNotFoundException e) {
+           JOptionPane.showMessageDialog(null, "No se puede establecer conexión con la base de datos, revise que XAMMP este corriendo");
          }
       
       return cnx;

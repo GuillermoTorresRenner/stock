@@ -1,5 +1,5 @@
 
-import controller.ControladorStock;
+import controller.ControladorItem;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,8 +17,8 @@ public class NewMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       controller.ControladorStock c= new ControladorStock();
-        System.out.println( c.dameIdCategoria("CAT1"));
+       controller.ControladorItem c= new ControladorItem();
+        System.out.println( c.dameCodigo("CAT1", "SUBCAT2", "MARCA1"));
      
     }
 }

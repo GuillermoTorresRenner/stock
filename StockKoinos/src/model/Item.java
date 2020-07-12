@@ -20,32 +20,35 @@ public class Item  implements java.io.Serializable {
      private String modelo;
      private String descripcion;
      private byte[] foto;
-     private Set stocks = new HashSet(0);
+     private byte[] codigo_barras;
+     
 
     public Item() {
     }
 
-	
-    public Item(Categoria categoria, Marca marca, Subcategoria subcategoria, String nombre, String codigo, String modelo) {
+    public Item(Integer id, Categoria categoria, Marca marca, Subcategoria subcategoria, String nombre, String codigo, String modelo, String descripcion, byte[] foto, byte[] codigo_barras) {
+        this.id = id;
         this.categoria = categoria;
         this.marca = marca;
         this.subcategoria = subcategoria;
         this.nombre = nombre;
         this.codigo = codigo;
         this.modelo = modelo;
+        this.descripcion = descripcion;
+        this.foto = foto;
+        this.codigo_barras = codigo_barras;
     }
-    public Item(Categoria categoria, Marca marca, Subcategoria subcategoria, String nombre, String codigo, String modelo, String descripcion, byte[] foto, Set stocks) {
-       this.categoria = categoria;
-       this.marca = marca;
-       this.subcategoria = subcategoria;
-       this.nombre = nombre;
-       this.codigo = codigo;
-       this.modelo = modelo;
-       this.descripcion = descripcion;
-       this.foto = foto;
-       this.stocks = stocks;
+
+    public byte[] getCodigo_barras() {
+        return codigo_barras;
     }
-   
+
+    public void setCodigo_barras(byte[] codigo_barras) {
+        this.codigo_barras = codigo_barras;
+    }
+
+	
+     
     public Integer getId() {
         return this.id;
     }
@@ -109,13 +112,7 @@ public class Item  implements java.io.Serializable {
     public void setFoto(byte[] foto) {
         this.foto = foto;
     }
-    public Set getStocks() {
-        return this.stocks;
-    }
-    
-    public void setStocks(Set stocks) {
-        this.stocks = stocks;
-    }
+   
 
 
 

@@ -18,6 +18,7 @@ public class MainView extends javax.swing.JFrame {
         initComponents();
         this.setSize(1200, 800);
         this.setLocationRelativeTo(null);
+        this.setResizable(false);
     }
 
     /**
