@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -99,5 +100,14 @@ public class ControladorStock {
         return cb;
     }
     
-    
+     public DefaultTableModel buscaItemPorCodigo(){
+         DefaultTableModel dtm = null;
+        try {
+            ps=con.establecerConexion().prepareStatement("");
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorStock.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+         return dtm;
+     }
 }
