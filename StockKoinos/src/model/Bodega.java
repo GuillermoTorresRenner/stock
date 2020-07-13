@@ -13,8 +13,7 @@ public class Bodega  implements java.io.Serializable {
 
      private Integer id;
      private String nombre;
-     private String descripcion;
-     private Set stocks = new HashSet(0);
+     
 
     public Bodega() {
     }
@@ -23,11 +22,12 @@ public class Bodega  implements java.io.Serializable {
     public Bodega(String nombre) {
         this.nombre = nombre;
     }
-    public Bodega(String nombre, String descripcion, Set stocks) {
-       this.nombre = nombre;
-       this.descripcion = descripcion;
-       this.stocks = stocks;
+
+    public Bodega(Integer id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
     }
+  
    
     public Integer getId() {
         return this.id;
@@ -43,20 +43,7 @@ public class Bodega  implements java.io.Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public String getDescripcion() {
-        return this.descripcion;
-    }
-    
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-    public Set getStocks() {
-        return this.stocks;
-    }
-    
-    public void setStocks(Set stocks) {
-        this.stocks = stocks;
-    }
+   
 
 
 

@@ -263,8 +263,8 @@ public class ControladorItem {
         return dameIdCategoria(cat) + dameIdSubCategoria(subcat) + dameIdMarca(marca) + dameIdActual();
     }
 
-    public boolean guardarItem(Item item) {
-        boolean exito=false;
+    public void guardarItem(Item item) {
+     
         try {
             ps = con.establecerConexion().prepareStatement("INSERT INTO item VALUES (null,?,?,?,?,?,?,?,?)");
             ps.setString(1, item.getNombre());
@@ -278,7 +278,7 @@ public class ControladorItem {
             
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "EL ÍTEM: "+ item.getNombre ()+ " SE GUARDÓ CORRECTAMENTE ");
-            exito =true;
+            
 
 
         } catch (SQLException ex) {
@@ -288,7 +288,7 @@ public class ControladorItem {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ControladorItem.class.getName()).log(Level.SEVERE, null, ex);
         }
-            return exito;
+           
     }
     
     
