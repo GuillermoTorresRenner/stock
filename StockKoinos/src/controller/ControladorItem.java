@@ -47,11 +47,7 @@ public class ControladorItem {
             JOptionPane.showMessageDialog(null, "No se pudo crear la categoría " + c.getCategoria().toUpperCase());
         }
 
-        try {
-            con.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(ControladorItem.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        con.cerrarConexion();
 
     }
 
@@ -266,7 +262,7 @@ public class ControladorItem {
     public void guardarItem(Item item) {
      
         try {
-            ps = con.establecerConexion().prepareStatement("INSERT INTO item VALUES (null,?,?,?,?,?,?,?,?)");
+            ps = con.establecerConexion().prepareStatement("INSERT INTO item VALUES (null,?,?,?,?,?,?,?)");
             ps.setString(1, item.getNombre());
             ps.setString(2, item.getCodigo());
             ps.setInt(3, item.getCategoria());
@@ -274,7 +270,7 @@ public class ControladorItem {
             ps.setInt(5, item.getMarca());
             ps.setString(6, item.getModelo());
             ps.setString(7, item.getDescripcion());
-            ps.setBinaryStream(8,new FileInputStream(item.getFoto()),item.getFoto().length());
+           
             
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "EL ÍTEM: "+ item.getNombre ()+ " SE GUARDÓ CORRECTAMENTE ");
@@ -285,8 +281,6 @@ public class ControladorItem {
             Logger.getLogger(ControladorItem.class.getName()).log(Level.SEVERE, null, ex);
 
             JOptionPane.showMessageDialog(null, "NO SE PUDO GUARDAR EL REGISTRO ");
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(ControladorItem.class.getName()).log(Level.SEVERE, null, ex);
         }
            
     }

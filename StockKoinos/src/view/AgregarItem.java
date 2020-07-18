@@ -83,12 +83,16 @@ public class AgregarItem extends javax.swing.JInternalFrame {
                 boolean exito;
                 o = JOptionPane.showConfirmDialog(null, "DESEA GUARDAR EL ÍTEM: " + txtNombre.getText(), "guardado de item", JOptionPane.YES_NO_OPTION);
                 if (o == JOptionPane.YES_OPTION) {
+                   
                     txtCodigo.setText(cs.dameCodigo(cbCategoria.getSelectedItem().toString(), cbSubcategoria.getSelectedItem().toString(), cbMarca.getSelectedItem().toString()));
                     JOptionPane.showMessageDialog(this, "se auto genró el código: " + txtCodigo.getText().toString(), "Aviso subcategoria", JOptionPane.WARNING_MESSAGE);
                     Icon i = codigoBarras.dameimagenCodigoBarras(txtCodigo.getText(), lblCodigoBarras);
                     lblCodigoBarras.setIcon(i);
                     lblCodigoBarras.setText(txtCodigo.getText());
-                    guardarDatos(item);
+                   exito= guardarDatos(item);
+                    if (exito) {
+                        limpiar();
+                    }
 
                 } else {
                     JOptionPane.showMessageDialog(this, "INGRESE UN CÓDIGO DE PRODUCTO VÁLIDO", "AVISO CÓDIGO INCORRECTO", JOptionPane.WARNING_MESSAGE);
@@ -121,12 +125,10 @@ public class AgregarItem extends javax.swing.JInternalFrame {
         txtModelo = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDescripcion = new javax.swing.JTextArea();
-        lblFoto = new javax.swing.JLabel();
         btnGuardar = new javax.swing.JButton();
         btnAgregarSubcategoría = new javax.swing.JButton();
         btnAgregarCategoria = new javax.swing.JButton();
         btnAgregarMarca = new javax.swing.JButton();
-        btnSeleccionarImg = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         lblPathFoto = new javax.swing.JLabel();
         lblCodigoBarras = new javax.swing.JLabel();
@@ -247,9 +249,6 @@ public class AgregarItem extends javax.swing.JInternalFrame {
         txtDescripcion.setWrapStyleWord(true);
         jScrollPane1.setViewportView(txtDescripcion);
 
-        lblFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/sinImagen.png"))); // NOI18N
-        lblFoto.setIconTextGap(1);
-
         btnGuardar.setText("Guardar Registro");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -275,13 +274,6 @@ public class AgregarItem extends javax.swing.JInternalFrame {
         btnAgregarMarca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarMarcaActionPerformed(evt);
-            }
-        });
-
-        btnSeleccionarImg.setText("Seleccionar imagen");
-        btnSeleccionarImg.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSeleccionarImgActionPerformed(evt);
             }
         });
 
@@ -358,11 +350,8 @@ public class AgregarItem extends javax.swing.JInternalFrame {
                                             .addComponent(lblCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addComponent(lblPathFoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(layout.createSequentialGroup()
-                                            .addComponent(lblFoto)
-                                            .addGap(18, 18, 18)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(btnSeleccionarImg)))))))))
+                                            .addGap(234, 234, 234)
+                                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -405,26 +394,20 @@ public class AgregarItem extends javax.swing.JInternalFrame {
                             .addComponent(cbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(lblCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(2, 2, 2)
-                                .addComponent(txtModelo)))
+                                .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblPathFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(82, 82, 82)
-                                .addComponent(btnSeleccionarImg)))))
+                        .addGap(81, 81, 81)))
                 .addGap(18, 24, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -522,28 +505,6 @@ public class AgregarItem extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_txtModeloKeyTyped
 
-    private void btnSeleccionarImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarImgActionPerformed
-        VentanaChooser.pack();
-        VentanaChooser.setLocationRelativeTo(null);
-        VentanaChooser.setVisible(true);
-        FileNameExtensionFilter formatoBusqueda = new FileNameExtensionFilter("JPG, PNG, y GIF", "jpg", "jpeg", "png", "gif");
-        chooser.setFileFilter(formatoBusqueda);
-        int resultado = chooser.showOpenDialog(null);
-        if (JFileChooser.APPROVE_OPTION == resultado) {
-            archivoFoto = chooser.getSelectedFile();
-            lblPathFoto.setText(archivoFoto.getAbsolutePath());
-            try {
-                ImageIcon imageIcon = new ImageIcon(archivoFoto.toString());
-                Icon icono = new ImageIcon(imageIcon.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_DEFAULT));
-                lblFoto.setIcon(icono);
-
-            } catch (Exception e) {
-            }
-        }
-
-
-    }//GEN-LAST:event_btnSeleccionarImgActionPerformed
-
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         validarDatos();
 
@@ -569,7 +530,6 @@ public class AgregarItem extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnAgregarSubcategoría;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnSeleccionarImg;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JComboBox<String> cbCategoria;
@@ -586,7 +546,6 @@ public class AgregarItem extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCodigoBarras;
-    private javax.swing.JLabel lblFoto;
     private javax.swing.JLabel lblPathFoto;
     private javax.swing.JRadioButton rbAutogenerarCodigo;
     private javax.swing.JRadioButton rbIntroducirPistola;
@@ -596,7 +555,7 @@ public class AgregarItem extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 
-    private void guardarDatos(Item item) {
+    private boolean guardarDatos(Item item) {
         item = new Item();
         item.setCodigo(txtCodigo.getText());
         item.setNombre(txtNombre.getText().toUpperCase());
@@ -606,8 +565,19 @@ public class AgregarItem extends javax.swing.JInternalFrame {
         item.setModelo(txtModelo.getText().toUpperCase());
         item.setDescripcion(txtDescripcion.getText().toUpperCase());
         item.setFoto(archivoFoto);
-        cs.guardarItem(item);
+        return cs.guardarItem(item);
 
+    }
+
+    private void limpiar() {
+       txtCodigo.setText("");
+       txtNombre.setText("");
+       txtModelo.setText("");
+       txtDescripcion.setText("");
+      actualizarCbCategoria();
+        actualizarCbSubcategoria();
+        actualizarCbMarca();
+        lblCodigoBarras.setIcon(null);
     }
 
 }

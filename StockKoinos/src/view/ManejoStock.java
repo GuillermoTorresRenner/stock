@@ -7,8 +7,16 @@ package view;
 
 import controller.ControladorItem;
 import controller.ControladorStock;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import model.Bodega;
+import model.Caja;
+import model.Lote;
+import model.Stock;
 
 /**
  *
@@ -19,6 +27,8 @@ public class ManejoStock extends javax.swing.JInternalFrame {
     private ControladorItem ci;
     private ControladorStock cs;
     private DefaultTableModel dtm;
+    private String[] columnas = {"ID", "CÓDIGO", "NOMBRE", "CATEGORÍA", "SUBCATEGORIA", "MARCA", "MODELO"};
+    private Stock s;
 
     public ManejoStock() {
         initComponents();
@@ -31,7 +41,8 @@ public class ManejoStock extends javax.swing.JInternalFrame {
         ci = new ControladorItem();
         cs = new ControladorStock();
         inicializarCombos();
-        iniciarTabla();
+        dtm = new DefaultTableModel(columnas, 0);
+        setTabla(dtm);
 
     }
 
@@ -74,6 +85,21 @@ public class ManejoStock extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         cbBodega = new javax.swing.JComboBox<>();
         btnBodega = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        lblSubcategoria = new javax.swing.JLabel();
+        lblCategoria = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        lblCodigo = new javax.swing.JLabel();
+        lblId = new javax.swing.JLabel();
+        lblModelo = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        lblMarca = new javax.swing.JLabel();
         btnCancelar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
 
@@ -147,6 +173,14 @@ public class ManejoStock extends javax.swing.JInternalFrame {
             }
         });
 
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollPane2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jScrollPane2MouseClicked(evt);
+            }
+        });
+
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -157,8 +191,33 @@ public class ManejoStock extends javax.swing.JInternalFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClicked(evt);
+            }
+        });
+        tabla.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tablaPropertyChange(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabla);
+        if (tabla.getColumnModel().getColumnCount() > 0) {
+            tabla.getColumnModel().getColumn(0).setResizable(false);
+            tabla.getColumnModel().getColumn(1).setResizable(false);
+            tabla.getColumnModel().getColumn(2).setResizable(false);
+            tabla.getColumnModel().getColumn(3).setResizable(false);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(30);
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -228,6 +287,8 @@ public class ManejoStock extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Caja:");
 
+        spCantidad.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, null, 1.0d));
+
         cbUnidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         cbLote.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -235,14 +296,130 @@ public class ManejoStock extends javax.swing.JInternalFrame {
         cbCaja.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnLote.setText("Agregar Lote");
+        btnLote.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoteActionPerformed(evt);
+            }
+        });
 
         btnCaja.setText("Agregar Caja");
+        btnCaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCajaActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("Bodega:");
 
         cbBodega.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnBodega.setText("Agregar Bodega");
+        btnBodega.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBodegaActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("ID:");
+
+        jLabel7.setText("Código:");
+
+        jLabel9.setText("Nombre:");
+
+        jLabel10.setText("Categoría:");
+
+        jLabel11.setText("Subcategoría:");
+
+        jLabel12.setText("Modelo:");
+
+        lblSubcategoria.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        lblSubcategoria.setForeground(new java.awt.Color(0, 0, 0));
+
+        lblCategoria.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        lblCategoria.setForeground(new java.awt.Color(0, 0, 0));
+
+        lblNombre.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        lblNombre.setForeground(new java.awt.Color(0, 0, 0));
+
+        lblCodigo.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        lblCodigo.setForeground(new java.awt.Color(0, 0, 0));
+
+        lblId.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        lblId.setForeground(new java.awt.Color(0, 0, 0));
+
+        lblModelo.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        lblModelo.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel13.setText("Marca");
+
+        lblMarca.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        lblMarca.setForeground(new java.awt.Color(0, 0, 0));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel11)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(jLabel13))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+                            .addComponent(lblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblCategoria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblSubcategoria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblMarca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblModelo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
+                    .addComponent(lblId, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblId, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7)
+                    .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel9)
+                    .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel10)
+                    .addComponent(lblCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel11)
+                    .addComponent(lblSubcategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
+                    .addComponent(lblMarca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel12)
+                    .addComponent(lblModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14))
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -250,19 +427,6 @@ public class ManejoStock extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel8))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(spCantidad)
-                            .addComponent(cbUnidad, 0, 237, Short.MAX_VALUE)
-                            .addComponent(cbBodega, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBodega, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -275,8 +439,23 @@ public class ManejoStock extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnLote, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
-                            .addComponent(btnCaja, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnCaja, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel8))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(spCantidad)
+                            .addComponent(cbUnidad, 0, 237, Short.MAX_VALUE)
+                            .addComponent(cbBodega, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBodega, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,7 +464,7 @@ public class ManejoStock extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(spCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(cbUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -294,17 +473,20 @@ public class ManejoStock extends javax.swing.JInternalFrame {
                     .addComponent(jLabel8)
                     .addComponent(cbBodega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBodega))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cbLote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLote))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(cbCaja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCaja))
                 .addGap(25, 25, 25))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         btnCancelar.setText("Cancelar");
@@ -315,6 +497,11 @@ public class ManejoStock extends javax.swing.JInternalFrame {
         });
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -343,9 +530,9 @@ public class ManejoStock extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -400,18 +587,89 @@ public class ManejoStock extends javax.swing.JInternalFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         if (rbCodigo.isSelected()) {
 
+            setTabla(cs.buscaItemPor(1, txtCodigo.getText()));
+
         } else if (rbNombre.isSelected()) {
 
+            setTabla(cs.buscaItemPor(2, txtNombre.getText()));
         } else if (rbCategoria.isSelected()) {
 
+            setTabla(cs.buscaItemPor(3, cbCategoria.getSelectedItem().toString()));
         } else if (rbSubCategoria.isSelected()) {
 
+            setTabla(cs.buscaItemPor(4, cbSubCategoria.getSelectedItem().toString()));
         } else if (rbMarca.isSelected()) {
 
+            setTabla(cs.buscaItemPor(5, cbMarca.getSelectedItem().toString()));
         } else {
-                JOptionPane.showMessageDialog(null, "Debe seleccionar un criterio de búsquda para poder encontrar el ítem");
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un criterio de búsquda para poder encontrar el ítem");
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void tablaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tablaPropertyChange
+       
+            
+        
+    }//GEN-LAST:event_tablaPropertyChange
+
+    private void jScrollPane2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane2MouseClicked
+     
+    }//GEN-LAST:event_jScrollPane2MouseClicked
+
+    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
+        int fila=tabla.getSelectedRow();
+        lblId.setText(String.valueOf(tabla.getModel().getValueAt(fila, 0)));
+        lblNombre.setText((String) tabla.getModel().getValueAt(fila, 2));
+        lblCodigo.setText((String) tabla.getModel().getValueAt(fila, 1));
+        lblCategoria.setText((String) tabla.getModel().getValueAt(fila, 3));
+        lblSubcategoria.setText((String) tabla.getModel().getValueAt(fila, 4));
+        lblMarca.setText((String) tabla.getModel().getValueAt(fila, 5));
+        lblModelo.setText((String) tabla.getModel().getValueAt(fila, 6));
+      
+    }//GEN-LAST:event_tablaMouseClicked
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+      
+        s=new Stock();
+        guardarRegistro();
+        
+        
+        
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnBodegaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBodegaActionPerformed
+       String v=JOptionPane.showInputDialog(null, "Ingrese el nombre de una Bodega").toUpperCase();
+        if (v!=null) {
+            Bodega b = new Bodega();
+            b.setNombre(v);
+            cs.agregarBodega(b);
+            actualizarCbBodega();
+            cbBodega.setSelectedItem(b.getNombre());
+        }
+       
+    }//GEN-LAST:event_btnBodegaActionPerformed
+
+    private void btnLoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoteActionPerformed
+         String v=JOptionPane.showInputDialog(null, "Ingrese el nombre de un Lote").toUpperCase();
+        if (v!=null) {
+            Lote l = new Lote();
+            l.setNombre(v);
+           cs.agregarLote(l);
+            actualizarCbLote();
+            cbLote.setSelectedItem(l.getNombre());
+        }
+    }//GEN-LAST:event_btnLoteActionPerformed
+
+    private void btnCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCajaActionPerformed
+         String v=JOptionPane.showInputDialog(null, "Ingrese el nombre de un Lote").toUpperCase();
+        if (v!=null) {
+            Caja c = new Caja();
+            c.setNombre(v);
+           cs.agregarCaja(c);
+            actualizarCbCaja();
+            cbCaja.setSelectedItem(c.getNombre());
+        }
+    }//GEN-LAST:event_btnCajaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -430,14 +688,29 @@ public class ManejoStock extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> cbSubCategoria;
     private javax.swing.JComboBox<String> cbUnidad;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblCategoria;
+    private javax.swing.JLabel lblCodigo;
+    private javax.swing.JLabel lblId;
+    private javax.swing.JLabel lblMarca;
+    private javax.swing.JLabel lblModelo;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblSubcategoria;
     private javax.swing.JRadioButton rbCategoria;
     private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbMarca;
@@ -507,11 +780,77 @@ public class ManejoStock extends javax.swing.JInternalFrame {
         cbMarca.setEnabled(!marca);
     }
 
-    private void iniciarTabla() {
-        String[] columnas = {"ID", "CÓDIGO", "NOMBRE", "CATEGORÍA", "SUBCATEGORIA", "MARCA", "MODELO"};
+    private void setTabla(DefaultTableModel modelo) {
+        tabla.removeAll();
         dtm = new DefaultTableModel(columnas, 0);
-        tabla.setModel(dtm);
+        tabla.setModel(modelo);
+        tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        TableColumnModel tm = tabla.getColumnModel();
+        for (int i = 0; i < tm.getColumnCount(); i++) {
+            tm.getColumn(i).setPreferredWidth(250);
+        }
 
+    }
+
+    private void guardarRegistro() {
+      validarDatos();
+    }
+
+    private void validarDatos() {
+       if (tabla.getSelectedRow()==-1){
+           JOptionPane.showMessageDialog(null, "Debe seleccionar un registro de la tabla para poder ingresarlo a Stock", "AVISO DE FILA NO SELECCIONADA",JOptionPane.YES_OPTION);
+       }
+       else if ((double)spCantidad.getValue()<=0) {
+             JOptionPane.showMessageDialog(null, "La Cantidad ingresada debe ser mayor que 0", "AVISO DE CANTIDAD INCORRECTA",JOptionPane.YES_OPTION);
+        }
+       else if (cbUnidad.getSelectedIndex()==0) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una Unidad", "AVISO DE FALTA DE UNIDAD",JOptionPane.YES_OPTION);
+        }
+       else if (cbBodega.getSelectedIndex()==0) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una Bodega", "AVISO DE FALTA DE BODEGA",JOptionPane.YES_OPTION);
+        }
+       
+       else if (cbLote.getSelectedIndex()==0) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un Lote", "AVISO DE FALTA DE LOTE",JOptionPane.YES_OPTION);
+        }
+       else if (cbCaja.getSelectedIndex()==0) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una Caja", "AVISO DE FALTA DE CAJA",JOptionPane.YES_OPTION);
+        }else{
+           
+           Stock stock =new Stock();
+           Date fecha=new Date();
+           SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+           stock.setFechaIngreso(sdf.format(fecha));
+           stock.setItem(Integer.parseInt(lblId.getText()));
+           stock.setCantidad((double) spCantidad.getValue());
+           stock.setUnidad(cs.buscaridde(1, cbUnidad.getSelectedItem().toString()));
+           stock.setBodega(cs.buscaridde(2, cbBodega.getSelectedItem().toString()));
+           stock.setLote(cs.buscaridde(3, cbLote.getSelectedItem().toString()));
+           stock.setCaja(cs.buscaridde(4, cbCaja.getSelectedItem().toString()));
+           
+           boolean e;
+           e=cs.guardarStock(stock);
+           if (e) {
+               limpiarCampos();
+           }
+           
+           
+       }
+        
+        
+    }
+
+    private void limpiarCampos() {
+        inicializarCombos();
+        setTabla(dtm);
+        spCantidad.setValue(0);
+        lblCategoria.setText("");
+        lblCodigo.setText("");
+        lblId.setText("");
+        lblMarca.setText("");
+        lblModelo.setText("");
+        lblNombre.setText("");
+        lblSubcategoria.setText("");
     }
 
 }
