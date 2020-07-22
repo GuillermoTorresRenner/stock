@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import model.Bodega;
 import model.Caja;
+import model.CodigoBarras;
 import model.Lote;
 import model.Stock;
 
@@ -29,6 +30,7 @@ public class ManejoStock extends javax.swing.JInternalFrame {
     private DefaultTableModel dtm;
     private String[] columnas = {"ID", "CÓDIGO", "NOMBRE", "CATEGORÍA", "SUBCATEGORIA", "MARCA", "MODELO"};
     private Stock s;
+    private CodigoBarras codbar;
 
     public ManejoStock() {
         initComponents();
@@ -40,6 +42,7 @@ public class ManejoStock extends javax.swing.JInternalFrame {
         //Inicialización de variables y objetos 
         ci = new ControladorItem();
         cs = new ControladorStock();
+        codbar=new CodigoBarras();
         inicializarCombos();
         dtm = new DefaultTableModel(columnas, 0);
         setTabla(dtm);
@@ -73,11 +76,9 @@ public class ManejoStock extends javax.swing.JInternalFrame {
         tabla = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         spCantidad = new javax.swing.JSpinner();
-        cbUnidad = new javax.swing.JComboBox<>();
         cbLote = new javax.swing.JComboBox<>();
         cbCaja = new javax.swing.JComboBox<>();
         btnLote = new javax.swing.JButton();
@@ -104,7 +105,7 @@ public class ManejoStock extends javax.swing.JInternalFrame {
         btnGuardar = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
-        jLabel1.setText("Manejo de Stock");
+        jLabel1.setText("Ingreso de Stock");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Buscar Ítem", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
 
@@ -281,15 +282,11 @@ public class ManejoStock extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Cantidad:");
 
-        jLabel3.setText("Unidad:");
-
         jLabel4.setText("Lote:");
 
         jLabel5.setText("Caja:");
 
-        spCantidad.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, null, 1.0d));
-
-        cbUnidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        spCantidad.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
         cbLote.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -389,12 +386,11 @@ public class ManejoStock extends javax.swing.JInternalFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(17, 17, 17)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                        .addComponent(jLabel6))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(lblId, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addComponent(lblId, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel7)
                     .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -444,13 +440,11 @@ public class ManejoStock extends javax.swing.JInternalFrame {
                         .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel3)
                             .addComponent(jLabel8))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(spCantidad)
-                            .addComponent(cbUnidad, 0, 237, Short.MAX_VALUE)
-                            .addComponent(cbBodega, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cbBodega, 0, 237, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(btnBodega, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
@@ -466,24 +460,20 @@ public class ManejoStock extends javax.swing.JInternalFrame {
                     .addComponent(spCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(cbUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(cbBodega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBodega))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cbLote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLote))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(cbCaja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCaja))
-                .addGap(25, 25, 25))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -510,7 +500,7 @@ public class ManejoStock extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(348, 348, 348)
                 .addComponent(jLabel1)
-                .addContainerGap(393, Short.MAX_VALUE))
+                .addContainerGap(384, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(81, 81, 81)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -638,7 +628,7 @@ public class ManejoStock extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnBodegaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBodegaActionPerformed
-       String v=JOptionPane.showInputDialog(null, "Ingrese el nombre de una Bodega").toUpperCase();
+        String v=JOptionPane.showInputDialog(null, "Ingrese el nombre de una Bodega").toUpperCase();
         if (v!=null) {
             Bodega b = new Bodega();
             b.setNombre(v);
@@ -646,30 +636,30 @@ public class ManejoStock extends javax.swing.JInternalFrame {
             actualizarCbBodega();
             cbBodega.setSelectedItem(b.getNombre());
         }
-       
+
     }//GEN-LAST:event_btnBodegaActionPerformed
 
-    private void btnLoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoteActionPerformed
-         String v=JOptionPane.showInputDialog(null, "Ingrese el nombre de un Lote").toUpperCase();
-        if (v!=null) {
-            Lote l = new Lote();
-            l.setNombre(v);
-           cs.agregarLote(l);
-            actualizarCbLote();
-            cbLote.setSelectedItem(l.getNombre());
-        }
-    }//GEN-LAST:event_btnLoteActionPerformed
-
     private void btnCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCajaActionPerformed
-         String v=JOptionPane.showInputDialog(null, "Ingrese el nombre de un Lote").toUpperCase();
+        String v=JOptionPane.showInputDialog(null, "Ingrese el nombre de un Lote").toUpperCase();
         if (v!=null) {
             Caja c = new Caja();
             c.setNombre(v);
-           cs.agregarCaja(c);
+            cs.agregarCaja(c);
             actualizarCbCaja();
             cbCaja.setSelectedItem(c.getNombre());
         }
     }//GEN-LAST:event_btnCajaActionPerformed
+
+    private void btnLoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoteActionPerformed
+        String v=JOptionPane.showInputDialog(null, "Ingrese el nombre de un Lote").toUpperCase();
+        if (v!=null) {
+            Lote l = new Lote();
+            l.setNombre(v);
+            cs.agregarLote(l);
+            actualizarCbLote();
+            cbLote.setSelectedItem(l.getNombre());
+        }
+    }//GEN-LAST:event_btnLoteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -686,14 +676,12 @@ public class ManejoStock extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> cbLote;
     private javax.swing.JComboBox<String> cbMarca;
     private javax.swing.JComboBox<String> cbSubCategoria;
-    private javax.swing.JComboBox<String> cbUnidad;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -756,11 +744,7 @@ public class ManejoStock extends javax.swing.JInternalFrame {
 
     }
 
-    private void actualizarCbUnidad() {
-        cbUnidad.removeAllItems();
-        cbUnidad.setModel(cs.dameComboUnidad());
-
-    }
+   
 
     private void inicializarCombos() {
         actualizarCbBodega();
@@ -769,7 +753,7 @@ public class ManejoStock extends javax.swing.JInternalFrame {
         actualizarCbMarca();
         actualizarCbLote();
         actualizarCbSubcategoria();
-        actualizarCbUnidad();
+       
     }
 
     private void bloquearCampos(boolean codigo, boolean nombre, boolean categoria, boolean subcategoria, boolean marca) {
@@ -800,12 +784,10 @@ public class ManejoStock extends javax.swing.JInternalFrame {
        if (tabla.getSelectedRow()==-1){
            JOptionPane.showMessageDialog(null, "Debe seleccionar un registro de la tabla para poder ingresarlo a Stock", "AVISO DE FILA NO SELECCIONADA",JOptionPane.YES_OPTION);
        }
-       else if ((double)spCantidad.getValue()<=0) {
+       else if ((int)spCantidad.getValue()<=0) {
              JOptionPane.showMessageDialog(null, "La Cantidad ingresada debe ser mayor que 0", "AVISO DE CANTIDAD INCORRECTA",JOptionPane.YES_OPTION);
         }
-       else if (cbUnidad.getSelectedIndex()==0) {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar una Unidad", "AVISO DE FALTA DE UNIDAD",JOptionPane.YES_OPTION);
-        }
+       
        else if (cbBodega.getSelectedIndex()==0) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una Bodega", "AVISO DE FALTA DE BODEGA",JOptionPane.YES_OPTION);
         }
@@ -822,18 +804,24 @@ public class ManejoStock extends javax.swing.JInternalFrame {
            SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
            stock.setFechaIngreso(sdf.format(fecha));
            stock.setItem(Integer.parseInt(lblId.getText()));
-           stock.setCantidad((double) spCantidad.getValue());
-           stock.setUnidad(cs.buscaridde(1, cbUnidad.getSelectedItem().toString()));
+           stock.setCantidad((int) spCantidad.getValue());
            stock.setBodega(cs.buscaridde(2, cbBodega.getSelectedItem().toString()));
            stock.setLote(cs.buscaridde(3, cbLote.getSelectedItem().toString()));
            stock.setCaja(cs.buscaridde(4, cbCaja.getSelectedItem().toString()));
-           
+          
+          
+          
            boolean e;
            e=cs.guardarStock(stock);
            if (e) {
-               limpiarCampos();
+              
+               int o=JOptionPane.showConfirmDialog(null, "Desea Generar etiquetas para os productos ingresados?", "GENERACIÓN DE CÓDIGOS DE BARRA", JOptionPane.YES_NO_OPTION);
+               if (o==JOptionPane.YES_OPTION) {
+                   int i= (int) spCantidad.getValue();
+                  codbar.dameArchivoCodigoBarras(lblCodigo.getText(), i,  lblNombre.getText());
+               }
            }
-           
+            limpiarCampos();
            
        }
         

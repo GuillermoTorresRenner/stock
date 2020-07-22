@@ -34,23 +34,7 @@ public class ControladorStock {
         con = new Conexion();
     }
 
-    public DefaultComboBoxModel dameComboUnidad() {
-        DefaultComboBoxModel cb = new DefaultComboBoxModel();
-        try {
-            ps = con.establecerConexion().prepareStatement("SELECT unidad from unidad order by unidad");
-            rs = ps.executeQuery();
-            cb.addElement("SELECCIONE UNA UNIDAD");
-            while (rs.next()) {
-                cb.addElement(rs.getString("unidad"));
-            }
-
-            con.cerrarConexion();
-        } catch (SQLException ex) {
-            Logger.getLogger(ControladorItem.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        con.cerrarConexion();
-        return cb;
-    }
+  
 
     public DefaultComboBoxModel dameComboBodegas() {
         DefaultComboBoxModel cb = new DefaultComboBoxModel();
@@ -165,14 +149,13 @@ public class ControladorStock {
     public boolean guardarStock(Stock s){
         boolean status=false;
         try {
-            ps= con.establecerConexion().prepareCall("insert into stock values(null,?,?,?,?,?,?,?)");
+            ps= con.establecerConexion().prepareCall("insert into stock values(null,?,?,?,?,?,?)");
             ps.setString(1, s.getFechaIngreso());
             ps.setInt(2,s.getItem());
-            ps.setInt(3, s.getUnidad());
-            ps.setDouble(4, s.getCantidad());
-            ps.setInt(5, s.getBodega());
-            ps.setInt(6, s.getLote());
-            ps.setInt(7, s.getCaja());
+            ps.setDouble(3, s.getCantidad());
+            ps.setInt(4, s.getBodega());
+            ps.setInt(5, s.getLote());
+            ps.setInt(6, s.getCaja());
           
             ps.executeUpdate();
             
@@ -236,7 +219,7 @@ public class ControladorStock {
              int id=0;
              switch(i){
                  case 1:
-                     consulta="SELECT id from unidad WHERE nombre=?";
+                     consulta="SELECT id from unidad WHERE unidad=?";
                      break;
                  case 2:
                      consulta="SELECT id from bodega WHERE nombre=?";

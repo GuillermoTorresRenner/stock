@@ -3,6 +3,7 @@ import controller.ControladorItem;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import model.CodigoBarras;
 import sun.util.calendar.Gregorian;
 
 /*
@@ -21,9 +22,8 @@ public class NewMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Date fecha=new Date();
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-        String r= sdf.format(fecha);
-        System.out.println(r);
+       CodigoBarras cb=new CodigoBarras();
+       cb.dameArchivoCodigoBarras("0303456sahlashsalshsala",5,"preueba");
     }
 }
+

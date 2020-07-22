@@ -13,20 +13,18 @@ public class Stock  implements java.io.Serializable {
      private int caja;
      private int item;
      private int lote;
-     private int unidad;
      private String fechaIngreso;
-     private double cantidad;
+     private int cantidad;
 
     public Stock() {
     }
 
-    public Stock(int id, int bodega, int caja, int item, int lote, int unidad, String fechaIngreso, double cantidad) {
+    public Stock(int id, int bodega, int caja, int item, int lote, int unidad, String fechaIngreso, int cantidad) {
         this.id = id;
         this.bodega = bodega;
         this.caja = caja;
         this.item = item;
         this.lote = lote;
-        this.unidad = unidad;
         this.fechaIngreso = fechaIngreso;
         this.cantidad = cantidad;
     }
@@ -71,14 +69,7 @@ public class Stock  implements java.io.Serializable {
         this.lote = lote;
     }
 
-    public int getUnidad() {
-        return unidad;
-    }
-
-    public void setUnidad(int unidad) {
-        this.unidad = unidad;
-    }
-
+  
     public String getFechaIngreso() {
         return fechaIngreso;
     }
@@ -91,7 +82,7 @@ public class Stock  implements java.io.Serializable {
         return cantidad;
     }
 
-    public void setCantidad(double cantidad) {
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
 

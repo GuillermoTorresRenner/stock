@@ -32,25 +32,53 @@ public class MainView extends javax.swing.JFrame {
 
         Escritorio = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jMenu1.setText("Stock");
+        Escritorio.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Escritorio.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
 
+        jMenu3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/item.png"))); // NOI18N
+        jMenu3.setText("Ítems");
+        jMenu3.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+
+        jMenuItem1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jMenuItem1.setText("Agregar Ítem");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu3.add(jMenuItem1);
 
-        jMenuItem2.setText("Administrar Stock");
+        jMenuBar1.add(jMenu3);
+
+        jMenu4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/barcode.png"))); // NOI18N
+        jMenu4.setText("Código de Barras");
+        jMenu4.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+
+        jMenuItem3.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jMenuItem3.setText("Imprimir Codigos de Barra");
+        jMenu4.add(jMenuItem3);
+
+        jMenuBar1.add(jMenu4);
+
+        jMenu1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/stock.png"))); // NOI18N
+        jMenu1.setText("Stock");
+        jMenu1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+
+        jMenuItem2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jMenuItem2.setText("Ingresar Stock");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -58,12 +86,12 @@ public class MainView extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem2);
 
-        jMenuItem3.setText("Imprimir Codigos de Barra");
-        jMenu1.add(jMenuItem3);
-
         jMenuBar1.add(jMenu1);
 
+        jMenu2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/reporte.png"))); // NOI18N
         jMenu2.setText("Reportes");
+        jMenu2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -76,7 +104,7 @@ public class MainView extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 767, Short.MAX_VALUE)
+            .addComponent(Escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
         );
 
         pack();
@@ -134,6 +162,8 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JDesktopPane Escritorio;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;

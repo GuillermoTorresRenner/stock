@@ -5,6 +5,7 @@ import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.Barcode128;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Color;
@@ -15,6 +16,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 
 
@@ -30,18 +32,27 @@ import javax.swing.JLabel;
  */
 public class CodigoBarras { 
     
-    public void dameArchivoCodigoBarras(String path,String codigo){
-       
+    private final String path="/home/guille/Escritorio/";
+    
+    
+    public void dameArchivoCodigoBarras(String codigo, int cantidad,String nombre){
+        String ruta=path+nombre+".pdf";
         try {
             Document doc=new Document();
-            PdfWriter pdf=PdfWriter.getInstance(doc,new FileOutputStream(path));
+            PdfWriter pdf=PdfWriter.getInstance(doc,new FileOutputStream(ruta));
             doc.open();
             Barcode128 code=new Barcode128();
             code.setCode(codigo);
             Image img=code.createImageWithBarcode(pdf.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
-            doc.add(img);
-            doc.close();
+            for (int i = 0; i <cantidad; i++) {
+                doc.add(new Paragraph("------------------------------------------------------------------------"));
+                 doc.add(new Paragraph(nombre));
+                 doc.add(img);
+               }
+             doc.add(new Paragraph("------------------------------------------------------------------------"));
             
+            doc.close();
+            JOptionPane.showMessageDialog(null, "Archivo creado exitosamente: "+ruta);
             
         } catch (FileNotFoundException ex) {
             Logger.getLogger(CodigoBarras.class.getName()).log(Level.SEVERE, null, ex);

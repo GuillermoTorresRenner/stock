@@ -259,8 +259,8 @@ public class ControladorItem {
         return dameIdCategoria(cat) + dameIdSubCategoria(subcat) + dameIdMarca(marca) + dameIdActual();
     }
 
-    public void guardarItem(Item item) {
-     
+    public boolean guardarItem(Item item) {
+        boolean e=false;
         try {
             ps = con.establecerConexion().prepareStatement("INSERT INTO item VALUES (null,?,?,?,?,?,?,?)");
             ps.setString(1, item.getNombre());
@@ -273,6 +273,7 @@ public class ControladorItem {
            
             
             ps.executeUpdate();
+            e=true;
             JOptionPane.showMessageDialog(null, "EL ÍTEM: "+ item.getNombre ()+ " SE GUARDÓ CORRECTAMENTE ");
             
 
@@ -282,7 +283,7 @@ public class ControladorItem {
 
             JOptionPane.showMessageDialog(null, "NO SE PUDO GUARDAR EL REGISTRO ");
         }
-           
+           return e;
     }
     
     
