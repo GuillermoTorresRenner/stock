@@ -1,9 +1,12 @@
+package main;
+
 
 import controller.ControladorItem;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import model.CodigoBarras;
+import model.Config;
 import sun.util.calendar.Gregorian;
 
 /*
@@ -16,14 +19,15 @@ import sun.util.calendar.Gregorian;
  *
  * @author guille
  */
-public class NewMain {
+public class Main {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       CodigoBarras cb=new CodigoBarras();
-       cb.dameArchivoCodigoBarras("0303456sahlashsalshsala",5,"preueba");
+      
+       
+      
     }
 }
 

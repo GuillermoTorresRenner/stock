@@ -31,8 +31,8 @@ import javax.swing.JOptionPane;
  * @author guille
  */
 public class CodigoBarras { 
-    
-    private final String path="/home/guille/Escritorio/";
+    private Config config=new Config();
+    private final String path=config.getPATH_BARCODE();
     
     
     public void dameArchivoCodigoBarras(String codigo, int cantidad,String nombre){
